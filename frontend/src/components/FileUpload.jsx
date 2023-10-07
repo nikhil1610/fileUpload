@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button, Card, Container } from 'react-bootstrap';
 
 import Dropzone from 'react-dropzone';
 
@@ -37,45 +37,54 @@ const FileUpload = ({file,setFile,errorMsg,setErrorMsg,handleOnSubmit}) => {
         {errorMsg && <p className="errorMsg">{errorMsg}</p>}
 
           <div className="upload-section">
-            <Dropzone 
-              onDrop={onDrop}
-              onDragEnter={() => updateBorder('over')}
-              onDragLeave={() => updateBorder('leave')}            
-            >
-              {({ getRootProps, getInputProps }) => (
-                <div {...getRootProps({ className: 'drop-zone' })} ref={dropRef}>
-                  <input {...getInputProps()} />
-                  <p>Drag and drop a file OR click here to select a file</p>
-                  {file && (
-                    <div>
-                      <strong>Selected file:</strong> {file.name}
+            <Container>
+              <Row>
+                <Col>
+                  <Dropzone 
+                    onDrop={onDrop}
+                    onDragEnter={() => updateBorder('over')}
+                    onDragLeave={() => updateBorder('leave')}            
+                  >
+                    {({ getRootProps, getInputProps }) => (
+                      <div {...getRootProps({ className: 'drop-zone' })} ref={dropRef}>
+                        <input {...getInputProps()} />
+                        <Card border="secondary">
+                          <p>Drag and drop a file OR click here to select a file</p>
+                        </Card>
+
+                        {file && (
+                          <div>
+                            <strong>Selected file:</strong> {file.name}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </Dropzone>
+                  {previewSrc ? (
+                    isPreviewAvailable ? (
+                      <div className="image-preview">
+                        <img className="preview-image" style={{height:'350px',width:'350px',objectFit:'contain'}} src={previewSrc} alt="Preview" />
+                      </div>
+                    ) : (
+                      <div className="preview-message">
+                        <p>No preview available for this file</p>
+                      </div>
+                    )
+                  ) : (
+                    <div className="preview-message">
+                      <p>Image preview will be shown here after selection</p>
                     </div>
                   )}
-                </div>
-              )}
-            </Dropzone>
-            {previewSrc ? (
-              isPreviewAvailable ? (
-                <div className="image-preview">
-                  <img className="preview-image" src={previewSrc} alt="Preview" />
-                </div>
-              ) : (
-                <div className="preview-message">
-                  <p>No preview available for this file</p>
-                </div>
-              )
-            ) : (
-              <div className="preview-message">
-                <p>Image preview will be shown here after selection</p>
-              </div>
-            )}
-          </div>
+                </Col>
+            </Row>
+          </Container>
 
           <Button variant="primary" type="submit">
             Upload
           </Button>
-      </Form>
 
+        </div>
+      </Form>
       </>
   )
 }
