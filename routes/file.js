@@ -2,7 +2,22 @@ const path = require('path');
 const express = require('express');
 const multer = require('multer');
 const File = require('../model/file');
+const  shortid = require("shortid");
 const Router = express.Router();
+require('dotenv').config();
+const cloudinary = require('cloudinary');
+const { error } = require('console');
+// cloudinary.config({ 
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+//   api_key: process.env.CLOUDINARY_API_KEY, 
+//   api_secret:  process.env.CLOUDINARY_API_SECRET
+// });
+          
+cloudinary.config({ 
+  cloud_name: 'dmi3wzhkn', 
+  api_key: '593218671844567', 
+  api_secret: 'EHJvZDTrA6ipsS_uEqgfltR_JWI' 
+});
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -32,20 +47,43 @@ Router.post(
   '/upload',
   upload.single('file'),
   async (req, res) => {
+    console.log(req.file);
+    const base = "https://bts-url";
+
     try {
-      const { path, mimetype } = req.file;
-      const file = new File({
-        file_path: path,
-        file_mimetype: mimetype
-      });
-      await file.save();
-      res.send('File uploaded successfully.');
+        
+      cloudinary.v2.uploader.upload(req.file.path).then(async (data)=>{
+        console.log(data.url);
+        const url=data.url;
+        const urlId = shortid.generate(url);
+        const { mimetype } = req.file;
+
+        const file = new File({
+          urlId,
+          original_path: data.url,
+          short_path:`${base}/${urlId}`,
+          file_mimetype: mimetype,
+        });
+        const fileData = await file.save();
+            const responseData = {
+              message:"File uploaded successfuly.",
+              fileData:fileData
+            }
+    
+            res.send(JSON.stringify(responseData));  
+    
+      }).catch((error)=>{
+        console.log(error);
+        res.status(400).send('Error while uploading file. Please, try again later.');
+      });  
     } catch (error) {
+      console.log(error);
       res.status(400).send('Error while uploading file. Please, try again later.');
     }
   },
   (error, req, res, next) => {
     if (error) {
+      console.log(error);
       res.status(500).send(error.message);
     }
   }

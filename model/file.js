@@ -2,7 +2,15 @@ const mongoose = require('mongoose');
 
 const fileSchema = mongoose.Schema(
   {
-    file_path: {
+    urlId:{
+      type:String,
+      required:true
+    },
+    original_path: {
+      type: String,
+      required: true
+    },
+    short_path: {
       type: String,
       required: true
     },
