@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import './App.css'
 import axios from 'axios';
+import { Alert, Fade } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import download from 'downloadjs';
 
+import './App.css'
 import FileUpload from './components/FileUpload'
 import { API_URL } from './utils/constants';
-import { Alert, Fade } from 'react-bootstrap';
 
 const ResponseMsg = ({variant,res})=>{
   return (
@@ -21,10 +23,10 @@ function App() {
     msg:''
   });
   const [response,setResponse] = useState({
-    shortUrl:'',
-    originalUrl:''
+    shortUrl:'https://bts-url/CVbti_J_P',
+    originalUrl:'http://res.cloudinary.com/dmi3wzhkn/image/upload/v1696690977/ruyubjzsam7lnrqcnllf.png'
   })
-  const [showResult,setShowResult] = useState(false);
+  const [showResult,setShowResult] = useState(true);
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
@@ -70,6 +72,11 @@ function App() {
   };
 
 
+  const donwloadFile = () =>{
+    download(response.originalUrl);
+  }
+
+
   return (
     <div className='container mt-5'>
       <h3>Upload File</h3>
@@ -84,9 +91,16 @@ function App() {
           </Fade>
         }
       {showResult && 
-      <div>
-        Your file is successfully uploaded. Here is the link to share:
+      <div className='d-flex flex-column justify-content-center align-items-center'>
+        <p>
+          Your file is successfully uploaded. 
+          <br/>
+          Here is the link to share:
+        </p>
         <a href={response.originalUrl} target='_blank'>{response.shortUrl}</a>
+        <Button className="mt-3 w-50 " variant="success"
+        onClick={donwloadFile}>
+          Download</Button>
       </div>
       }  
     </div>
