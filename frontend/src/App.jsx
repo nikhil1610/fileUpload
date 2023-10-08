@@ -26,7 +26,7 @@ function App() {
     shortUrl:'',
     originalUrl:''
   })
-  const [showResult,setShowResult] = useState(true);
+  const [showResult,setShowResult] = useState(false);
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
