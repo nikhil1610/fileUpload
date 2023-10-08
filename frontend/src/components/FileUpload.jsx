@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Form, Row, Col, Button, Card, Container } from 'react-bootstrap';
 
-import Dropzone from 'react-dropzone';
+import Dropzone, { useDropzone } from 'react-dropzone';
 
 const FileUpload = ({file,setFile,errorMsg,setErrorMsg,handleOnSubmit}) => {
 
@@ -9,9 +9,27 @@ const FileUpload = ({file,setFile,errorMsg,setErrorMsg,handleOnSubmit}) => {
   const [isPreviewAvailable, setIsPreviewAvailable] = useState(false); // state to show preview only for images
   const dropRef = useRef(); // React ref for managing the hover state of droppable area
 
+  // const {
+  //   getRootProps,
+  //   getInputProps
+  // } = useDropzone({
+  //   accept: {
+  //     'image/*': [],
+  //     'application/pdf': [],
+  //     'application/msword': []
+  //   }
+  // });
 
   const onDrop = (files) =>{
     const [uploadedFile] = files;
+    if(!uploadedFile.name.match(/\.(jpeg|jpg|png|pdf|doc|docx)$/)){
+      setErrorMsg('Only jpeg|png|pdf|doc files are accepted.');
+      setFile(null);
+      setPreviewSrc('');
+      setIsPreviewAvailable(false);
+      return;
+    }
+    setErrorMsg('');
     setFile(uploadedFile);
   
     const fileReader = new FileReader();
@@ -79,7 +97,7 @@ const FileUpload = ({file,setFile,errorMsg,setErrorMsg,handleOnSubmit}) => {
             </Row>
           </Container>
 
-          <Button variant="primary" type="submit">
+          <Button className="mt-3" variant="primary" type="submit">
             Upload
           </Button>
 

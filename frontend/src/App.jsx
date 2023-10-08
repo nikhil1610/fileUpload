@@ -71,8 +71,7 @@ function App() {
 
 
   return (
-    <>
-      <h1>Share your files with ease</h1>
+    <div className='container mt-5'>
       <h3>Upload File</h3>
       <div className="card">
         <FileUpload file={file} setFile={setFile} 
@@ -80,7 +79,7 @@ function App() {
         handleOnSubmit={handleOnSubmit}/>
       </div>
         {resMsg.variant!=='' &&
-          <Fade in={resMsg.variant!==''} timeout={300}>
+          <Fade in={resMsg.variant!==''} >
             <ResponseMsg variant={resMsg.variant} res={resMsg.msg}/>
           </Fade>
         }
@@ -90,7 +89,7 @@ function App() {
         <a href={response.originalUrl} target='_blank'>{response.shortUrl}</a>
       </div>
       }  
-    </>
+    </div>
   )
 }
 
