@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios';
-import { Alert, Fade } from 'react-bootstrap';
+import { Alert, Fade, Spinner } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import download from 'downloadjs';
 
@@ -18,6 +18,7 @@ const ResponseMsg = ({variant,res})=>{
 function App() {
   const [file, setFile] = useState(null); // state for storing actual image
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading,setLoading] = useState(false);
   const [resMsg,setResMsg] = useState({
     variant:'',
     msg:''
@@ -31,6 +32,7 @@ function App() {
   const handleOnSubmit = async (event) => {
     event.preventDefault();
     console.log('Sumbit Clicked');
+    setLoading(true);
   
     try {
         if (file) {
@@ -54,15 +56,18 @@ function App() {
             variant:'success',
             msg:'File Uploaded Successfully.'
           });
+          setLoading(false);
           setShowResult(true);
 
         } else {
+          setLoading(false)
           setErrorMsg('Please select a file to add.');
         }
        
     } catch (error) {
       console.log(error.response);
       error.response && setErrorMsg(error.response.data);
+      setLoading(false)
       setResMsg({
         variant:'danger',
         msg:'Error uploading your file. Please, try again later.'
@@ -90,6 +95,10 @@ function App() {
             <ResponseMsg variant={resMsg.variant} res={resMsg.msg}/>
           </Fade>
         }
+
+      {loading && 
+      <Spinner animation="border" style={{width:'100px', height:'100px'}} />
+      }  
       {showResult && 
       <div className='d-flex flex-column justify-content-center align-items-center'>
         <p>
