@@ -23,8 +23,8 @@ function App() {
     msg:''
   });
   const [response,setResponse] = useState({
-    shortUrl:'https://bts-url/CVbti_J_P',
-    originalUrl:'http://res.cloudinary.com/dmi3wzhkn/image/upload/v1696690977/ruyubjzsam7lnrqcnllf.png'
+    shortUrl:'',
+    originalUrl:''
   })
   const [showResult,setShowResult] = useState(true);
 

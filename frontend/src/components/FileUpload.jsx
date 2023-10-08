@@ -9,16 +9,6 @@ const FileUpload = ({file,setFile,errorMsg,setErrorMsg,handleOnSubmit}) => {
   const [isPreviewAvailable, setIsPreviewAvailable] = useState(false); // state to show preview only for images
   const dropRef = useRef(); // React ref for managing the hover state of droppable area
 
-  // const {
-  //   getRootProps,
-  //   getInputProps
-  // } = useDropzone({
-  //   accept: {
-  //     'image/*': [],
-  //     'application/pdf': [],
-  //     'application/msword': []
-  //   }
-  // });
 
   const onDrop = (files) =>{
     const [uploadedFile] = files;
